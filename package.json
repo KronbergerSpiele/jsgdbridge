@@ -7,5 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "gpl-3.0-or-later"
+  "license": "gpl-3.0-or-later",
+  "files": [
+    "index.js",
+    "index.js.flow",
+    "README.md"
+  ]
 }

@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  # pull_request:
+
+jobs:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         persist-credentials: false
+  #     - run: echo "okay"
+
+  publish:
+    # needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          package: package.json
+          token: ${{ secrets.NPM_TOKEN }}
