@@ -1,16 +1,23 @@
 {
   "name": "@kronbergerspiele/jsgdbridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "js/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "gpl-3.0-or-later",
   "files": [
-    "index.js",
-    "index.js.flow",
+    "js/index.js",
+    "js/index.js.flow",
     "README.md"
-  ]
+  ],
+  "peerDependencies": {
+    "react": ">=16.14.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.14.0",
+    "@types/react-dom": "^17.0.11"
+  }
 }
