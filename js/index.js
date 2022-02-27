@@ -24,15 +24,28 @@
     const { createElement, Component } = React;
     const h = createElement;
 
-    /** @typedef {{playerName: string}} JSGDHostProps */
+    /** @typedef {{ playerName: string, prefix: string }} JSGDHostProps */
     /** @type{ import('react').FC<JSGDHostProps> } */
     const JSGDHost = function JSGDHost(props) {
+      const engineRef = React.useRef(null);
       React.useEffect(() => {
-        console.log(props.playerName);
+        console.log("Starting JSGDHost", props);
+        const GODOT_CONFIG = {
+          args: [],
+          canvasResizePolicy: 2,
+          executable: "game",
+          experimentalVK: false,
+          fileSizes: {},
+          focusCanvas: true,
+          gdnativeLibs: [],
+          prefix: props.prefix,
+        };
+        engineRef.current = new Godot(GODOT_CONFIG);
       }, []);
       return h("p", {}, "welcome");
     };
 
+    //
     /** @module jsgdbridge */
     exports.default = JSGDHost;
     exports.JSGDHost = JSGDHost;

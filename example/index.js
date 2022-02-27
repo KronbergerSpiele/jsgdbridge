@@ -5,6 +5,9 @@ const h = createElement;
 const JSGDHost = window.jsgdbridge.default;
 const root = document.getElementById("root");
 
-const ele = h(JSGDHost, { playerName: "test" });
+const ele = h(JSGDHost, {
+  playerName: "Johnny",
+  prefix: "https://kronbergerspiele.github.io/bloodfever/",
+});
 
 render(ele, root);

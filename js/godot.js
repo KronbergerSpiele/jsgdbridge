@@ -20,7 +20,7 @@ else if (typeof define === 'function' && define['amd'])
 else if (typeof exports === 'object')
   exports["Godot"] = Godot;
 
-const Preloader = /** @constructor */ function () { // eslint-disable-line no-unused-vars
+const Preloader = /** @constructor */ function (prefix) { // eslint-disable-line no-unused-vars
 	function getTrackedResponse(response, load_status) {
 		function onloadprogress(reader, controller) {
 			return reader.read().then(function (result) {
@@ -54,7 +54,8 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 			loaded: 0,
 			done: false,
 		};
-		return fetch(file).then(function (response) {
+		const url = `${prefix}/${file}`
+		return fetch(url).then(function (response) {
 			if (!response.ok) {
 				return Promise.reject(new Error(`Failed loading file '${file}'`));
 			}
@@ -513,7 +514,7 @@ const InternalConfig = function (initConfig) { // eslint-disable-line no-unused-
  * @header HTML5 shell class reference
  */
 const Engine = (function () {
-	const preloader = new Preloader();
+	let preloader = null;
 
 	let loadPromise = null;
 	let loadPath = '';
@@ -531,6 +532,7 @@ const Engine = (function () {
 	 * @param {EngineConfig} initConfig The initial config for this instance.
 	 */
 	function Engine(initConfig) { // eslint-disable-line no-shadow
+		this.preloader = new Preloader(initConfig.prefix);
 		this.config = new InternalConfig(initConfig);
 		this.rtenv = null;
 	}
