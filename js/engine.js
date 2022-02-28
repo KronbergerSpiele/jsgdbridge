@@ -1,22 +1,19 @@
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["exports", "./godot.js"], function (exports, Godot) {
-      factory((root.Engine = exports), Godot);
+    define(["exports"], function (exports) {
+      factory((root.Engine = exports));
     });
   } else if (
     typeof exports === "object" &&
     typeof exports.nodeName !== "string"
   ) {
-    factory(exports, require("./godot.js"));
+    factory(exports);
   } else {
-    factory((root.Engine = {}), root.Godot);
+    factory((root.Engine = {}));
   }
 })(
   typeof self !== "undefined" ? self : this,
-  function (
-    exports,
-    /** @type{ import('./godot') */ Godot
-  ) {
+  function (exports, /** @type{(...:any[]) => any} */ Godot) {
     const Preloader = /** @constructor */ function (prefix) {
       // eslint-disable-line no-unused-vars
       function getTrackedResponse(response, load_status) {
@@ -639,8 +636,9 @@
                   const cloned = new Response(response.clone().body, {
                     headers: [["content-type", "application/wasm"]],
                   });
-                  Godot(me.config.getModuleConfig(loadPath, cloned)).then(
-                    function (module) {
+                  initConfig
+                    .Godot(me.config.getModuleConfig(loadPath, cloned))
+                    .then(function (module) {
                       const paths = me.config.persistentPaths;
                       module["initFS"](paths).then(function (err) {
                         me.rtenv = module;
@@ -649,8 +647,7 @@
                         }
                         resolve();
                       });
-                    }
-                  );
+                    });
                 });
               });
             }

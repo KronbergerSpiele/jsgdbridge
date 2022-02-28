@@ -2,16 +2,16 @@
   if (typeof define === "function" && define.amd) {
     define(["exports", "react", "./engine.js"], function (
       exports,
-      react,
-      engine
+      React,
+      Engine
     ) {
-      factory((root.jsgdbridge = exports), react, engine);
+      factory((root.jsgdbridge = exports), React, Engine.Engine);
     });
   } else if (
     typeof exports === "object" &&
     typeof exports.nodeName !== "string"
   ) {
-    factory(exports, require("react"), require("./engine.js"));
+    factory(exports, require("react"), require("./engine.js").Engine);
   } else {
     factory((root.jsgdbridge = {}), root.React, root.Engine.Engine);
   }
@@ -22,25 +22,33 @@
     /** @type{ import('react') */ React,
     /** @type{ import('./engine') */ Engine
   ) {
-    const { createElement, Component } = React;
-    const h = createElement;
+    const { createElement: h } = React;
 
-    /** @typedef {{ playerName: string, prefix: string }} JSGDHostProps */
+    /** @typedef {{ playerName: string, prefix: string, canvasResizePolicy:0|1|2 }} JSGDHostProps */
     /** @type{ import('react').FC<JSGDHostProps> } */
     const JSGDHost = function JSGDHost(props) {
+      const { prefix, executable = "game", canvasResizePolicy = 1 } = props;
+
+      const containerRef = React.useRef(null);
+
+      const godotSrc = React.useMemo(() => `${prefix}/${executable}.js`, []);
+
+      const godotRef = React.useRef(null);
       const engineRef = React.useRef(null);
       const [notice, setNotice] = React.useState(null);
-      React.useEffect(() => {
+
+      const startEngine = React.useCallback((Godot) => {
         console.log("Starting JSGDHost", props);
         const GODOT_CONFIG = {
           args: [],
-          canvasResizePolicy: 2,
-          executable: "game",
+          canvasResizePolicy,
           experimentalVK: false,
           fileSizes: {},
           focusCanvas: true,
           gdnativeLibs: [],
-          prefix: props.prefix,
+          executable,
+          prefix,
+          Godot,
         };
         const engine = new Engine(GODOT_CONFIG);
         engineRef.current = engine;
@@ -51,23 +59,66 @@
           engine
             .startGame({
               onProgress: function (current, total) {
-               setNotice(`loading: ${current}/${total}`)
+                setNotice(`loading: ${current}/${total}`);
               },
             })
             .then(() => {
               setNotice("Completed load");
-            }).catch((err) => {
-              console.log(err)
+            })
+            .catch((err) => {
+              console.log(err);
               setNotice(err);
             });
         }
       }, []);
+
+      const registerGodot = React.useCallback((Godot) => {
+        console.log("register godot");
+        console.log(Godot);
+        godotRef.current = Godot;
+        window.registerGodot = undefined;
+        startEngine(Godot);
+      }, []);
+
+      const fetchEngine = React.useCallback(() => {
+        console.log("fetching engine");
+        fetch(godotSrc)
+          .then((r) => r.text())
+          .then((godotScript) => {
+            const withoutEngine = godotScript.replace(
+              /^if \(typeof exports === 'object'.*/ms,
+              ""
+            );
+            const withSetter = `
+              ${withoutEngine}
+              registerGodot(Godot);
+            `;
+            window.registerGodot = registerGodot;
+
+            const script = document.createElement("script");
+            script.innerHTML = withSetter;
+            containerRef.current.appendChild(script);
+          });
+      }, []);
+
+      React.useEffect(() => {
+        fetchEngine();
+      }, []);
+
       return h(
-        React.Fragment,
-        null,
+        "div",
+        {
+          ref: containerRef,
+        },
         h(
           "canvas",
-          { id: "canvas" },
+          {
+            id: "canvas",
+            style: {
+              width: "480px",
+              height: "320px",
+            },
+          },
           "HTML5 canvas appears to be unsupported in the current browser. Please try updating or use a different browser."
         ),
         h("p", {}, notice)

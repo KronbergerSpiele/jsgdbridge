@@ -15,8 +15,8 @@
     "js/index.js",
     "js/index.d.ts",
     "js/index.js.flow",
-    "js/godot.js",
-    "js/godot.d.ts",
+    "js/engine.js",
+    "js/engine.d.ts",
     "README.md"
   ],
   "peerDependencies": {
