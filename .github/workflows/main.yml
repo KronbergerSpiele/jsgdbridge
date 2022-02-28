@@ -20,7 +20,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: JS-DevTools/npm-publish@v1
         with:
-          package: package.json
           token: ${{ secrets.NPM_TOKEN }}
