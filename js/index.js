@@ -123,7 +123,12 @@
       return h(
         "div",
         {
-          style: {},
+          style: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          },
           ref: containerRef,
         },
         h(
