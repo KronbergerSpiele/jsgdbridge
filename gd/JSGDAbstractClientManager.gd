@@ -1,5 +1,5 @@
 extends Node
-class_name AbstractJSGDBridgeManager
+class_name JSGDAbstractClientManager
 
 func log(arg):
   print("JSGDBridge ", arg)

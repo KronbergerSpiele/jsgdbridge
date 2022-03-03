@@ -7,6 +7,9 @@ const root = document.getElementById("root");
 
 const ele = h(JSGDHost, {
   playerName: "Johnny",
+  reportScore(score) {
+    console.log("score", score);
+  },
   prefix: "https://kronbergerspiele.github.io/bloodfever/",
 });
 

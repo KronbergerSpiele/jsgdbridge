@@ -24,10 +24,16 @@
   ) {
     const { createElement: h } = React;
 
-    /** @typedef {{ playerName: string, prefix: string, canvasResizePolicy:0|1|2 }} JSGDHostProps */
+    /** @typedef {{ playerName: string, prefix: string, canvasResizePolicy?:0|1|2, reportScore(score:number):void }} JSGDHostProps */
     /** @type{ import('react').FC<JSGDHostProps> } */
     const JSGDHost = function JSGDHost(props) {
-      const { prefix, executable = "game", canvasResizePolicy = 1 } = props;
+      const {
+        prefix,
+        executable = "game",
+        canvasResizePolicy = 0,
+        reportScore,
+        playerName,
+      } = props;
 
       const containerRef = React.useRef(null);
 
@@ -50,6 +56,12 @@
           prefix,
           Godot,
         };
+
+        window.jsgdhost = {
+          playerName,
+          reportScore,
+        };
+
         const engine = new Engine(GODOT_CONFIG);
         engineRef.current = engine;
 
@@ -108,16 +120,18 @@
       return h(
         "div",
         {
+          style: {
+            position: "absolute",
+          },
           ref: containerRef,
         },
         h(
           "canvas",
           {
             id: "canvas",
-            style: {
-              width: "480px",
-              height: "320px",
-            },
+            height: 320,
+            width: 480,
+            style: {},
           },
           "HTML5 canvas appears to be unsupported in the current browser. Please try updating or use a different browser."
         ),
