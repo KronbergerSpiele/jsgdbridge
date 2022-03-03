@@ -4,9 +4,11 @@ class_name JSGDClient
 func init(manager: JSGDAbstractClientManager, host):
     .init(manager, host)
     
-    var name = self.host.playerName
-    manager.log('jsgdhost found')
-    manager.log(name)
+    if host:
+      playerName = self.host.playerName
+      playerPowerup = float(self.host.playerPowerup)
+      manager.log(playerName)
+      manager.log(playerPowerup)
 
 func reportScore(score):
   manager.log('client score')

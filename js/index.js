@@ -24,7 +24,7 @@
   ) {
     const { createElement: h } = React;
 
-    /** @typedef {{ playerName: string, prefix: string, canvasResizePolicy?:0|1|2, reportScore(score:number):void }} JSGDHostProps */
+    /** @typedef {{ playerName: string, prefix: string, canvasResizePolicy?:0|1|2, reportScore(score:number):void, playerPowerup?:number }} JSGDHostProps */
     /** @type{ import('react').FC<JSGDHostProps> } */
     const JSGDHost = function JSGDHost(props) {
       const {
@@ -33,6 +33,7 @@
         canvasResizePolicy = 0,
         reportScore,
         playerName,
+        playerPowerup = 1,
       } = props;
 
       const containerRef = React.useRef(null);
@@ -60,6 +61,7 @@
         window.jsgdhost = {
           playerName,
           reportScore,
+          playerPowerup,
         };
 
         const engine = new Engine(GODOT_CONFIG);
