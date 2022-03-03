@@ -75,7 +75,8 @@
               },
             })
             .then(() => {
-              setNotice("Completed load");
+              //setNotice("Completed load");
+              setNotice();
             })
             .catch((err) => {
               console.log(err);
@@ -120,9 +121,7 @@
       return h(
         "div",
         {
-          style: {
-            position: "absolute",
-          },
+          style: {},
           ref: containerRef,
         },
         h(
@@ -135,7 +134,7 @@
           },
           "HTML5 canvas appears to be unsupported in the current browser. Please try updating or use a different browser."
         ),
-        h("p", {}, notice)
+        notice ? h("p", {}, notice) : null
       );
     };
 
