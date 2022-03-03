@@ -1,7 +1,7 @@
 {
   "name": "@kronbergerspiele/jsgdbridge",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "main": "js/index.js",
   "types": "js/index.d.ts",
