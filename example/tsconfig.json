@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "strict": true
+  }
+}

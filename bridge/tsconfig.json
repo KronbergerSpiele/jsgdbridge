@@ -1,0 +1,12 @@
+{
+  "include": ["src"],
+  "files": ["src/global.d.ts"],
+  "compilerOptions": {
+    "composite": true,
+    "esModuleInterop": true,
+    "rootDir": "src",
+    "strict": true,
+    "jsx": "react",
+    "skipLibCheck": true
+  }
+}

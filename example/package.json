@@ -1,0 +1,31 @@
+{
+  "name": "jsgdbridge-example",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "GPLv3.0+",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@kronbergerspiele/jsgdbridge": "^0.0.1",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.4",
+    "parcel": "^2.0.0",
+    "typescript": "^4.6.4"
+  }
+}

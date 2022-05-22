@@ -1,0 +1,22 @@
+{
+    "name": "jsgdbridge-workspace",
+    "workspaces": [
+        "./bridge",
+        "./example"
+    ],
+    "devDependencies": {
+        "@kronbergerspiele/eslint-config-clutterfree": "^2.0.1",
+        "husky": "^8.0.0",
+        "lint-staged": "^12.4.1"
+    },
+    "scripts": {
+        "prepare": "husky install",
+        "lint-staged": "npm run lint-staged --workspaces --if-present",
+        "start:example": "npm  --workspace example run start",
+        "start:bridge": "npm  --workspace bridge run start"
+    },
+    "overrides": {
+        "react": "^18.1.0",
+        "react-dom": "^18.1.0"
+    }
+}
