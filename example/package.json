@@ -19,8 +19,14 @@
   },
   "dependencies": {
     "@kronbergerspiele/jsgdbridge": "^0.0.1",
+    "@types/styletron-engine-atomic": "^1.1.1",
+    "@types/styletron-react": "^5.0.3",
+    "@types/styletron-standard": "^2.0.2",
+    "baseui": "^11.0.3",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "styletron-engine-atomic": "^1.4.8",
+    "styletron-react": "^6.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",

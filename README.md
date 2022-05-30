@@ -6,3 +6,7 @@ Intentionally kept as pure js files (with jsdoc) to keep it simple and not requi
 ## JSGDHost
 
 The react component to embed a godot game.
+
+# Development
+
+Run `npm run start:example` in one terminal and `npm run start:bridge` in another.
