@@ -32,10 +32,14 @@ func reportScore(score):
 
 var _onPlayerNameChanged_ref = JavaScript.create_callback(self, "onPlayerNameChanged")
 func onPlayerNameChanged(newName):
+  if newName is Array:
+    newName = newName[0]
   playerName = newName
   emit_signal("playerNameChanged", newName)
   
 var _onPowerUpChanged_ref = JavaScript.create_callback(self, "_onPowerUpChanged_ref")
 func onPowerUpChanged(newPowerUp):
+  if newPowerUp is Array:
+    newPowerUp = newPowerUp[0]
   playerPowerUp = newPowerUp
   emit_signal("playerPowerUpChanged", newPowerUp)

@@ -1,11 +1,11 @@
 declare global {
   interface Window {
-    jsgdhost: {
+    jsgdhost?: {
       playerName: string
       reportScore(score: number): void
       playerPowerUp?: number
-      onPlayerNameChanged?(): void
-      onPlayerPowerUpChanged?(): void
+      onPlayerNameChanged?(value: string): void
+      onPlayerPowerUpChanged?(value: number): void
     }
     registerGodot?(godot: any): void
   }

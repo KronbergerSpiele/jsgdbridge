@@ -117,6 +117,10 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
     fetchEngine()
   }, [])
 
+  React.useEffect(() => {
+    window.jsgdhost?.onPlayerNameChanged?.(playerName)
+  }, [playerName])
+
   return (
     <div
       style={{
