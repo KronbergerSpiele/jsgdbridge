@@ -1,4 +1,5 @@
 import React from 'react'
+import useResizeObserver from 'use-resize-observer'
 
 import Engine from './engine'
 import './global.d'
@@ -10,6 +11,8 @@ export type JSGDHostProps = {
   reportScore(score: number): void
   playerPowerup?: number
   executable?: string
+  canvasWidth?: number
+  canvasHeight?: number
 }
 
 export type Godot = any
@@ -24,9 +27,16 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
     reportScore,
     playerName,
     playerPowerup = 1,
+    canvasHeight = 320,
+    canvasWidth = 480,
   } = props
 
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const isRescaling = canvasResizePolicy === 0
+  const { width: containerWidth = 320, height: containerHeight = 480 } =
+    useResizeObserver<HTMLDivElement>({
+      ref: containerRef,
+    })
 
   const godotSrc = React.useMemo(() => `${prefix}/${executable}.js`, [])
 
@@ -114,14 +124,29 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
+        width: '100%',
+        height: '100%',
       }}
       ref={containerRef}
     >
-      <canvas id='canvas' height={320} width={480} style={{}}>
+      {notice ? (
+        <p
+          style={{
+            position: 'absolute',
+          }}
+        >
+          {notice}
+        </p>
+      ) : null}
+      <canvas
+        id='canvas'
+        height={isRescaling ? containerHeight : canvasHeight}
+        width={isRescaling ? containerWidth : canvasWidth}
+        style={{ position: 'absolute' }}
+      >
         HTML5 canvas appears to be unsupported in the current browser. Please
         try updating or use a different browser.
       </canvas>
-      {notice ? <p>{notice}</p> : null}
     </div>
   )
 })

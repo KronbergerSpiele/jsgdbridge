@@ -63,6 +63,7 @@ export const App: React.FC = function App() {
           ) : (
             <Host
               prefix='https://kronbergerspiele.github.io/kellergewoelbenlauf/'
+              canvasResizePolicy={1}
               key='kg'
             />
           )}
