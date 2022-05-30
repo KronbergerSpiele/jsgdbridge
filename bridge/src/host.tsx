@@ -46,6 +46,11 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
   const engineRef = React.useRef<Engine | null>(null)
   const [notice, setNotice] = React.useState<string | null>(null)
 
+  const reportScoreRef = React.useRef(reportScore)
+  React.useEffect(() => {
+    reportScoreRef.current = reportScore
+  }, [reportScore])
+
   const startEngine = React.useCallback((Godot: Godot) => {
     console.log('Starting JSGDHost', props)
     const GODOT_CONFIG = {
@@ -62,7 +67,9 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
 
     window.jsgdhost = {
       playerName,
-      reportScore,
+      reportScore(score: number) {
+        reportScoreRef.current(score)
+      },
       playerPowerUp,
     }
 

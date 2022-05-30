@@ -8,6 +8,7 @@ export type HostProps = {
   prefix: string
   canvasResizePolicy?: 0 | 1
   playerPowerUp: number
+  reportScore(score: number): void
 }
 
 export const Host: React.FC<HostProps> = function Host({
@@ -15,12 +16,13 @@ export const Host: React.FC<HostProps> = function Host({
   canvasResizePolicy = 0,
   playerName,
   playerPowerUp,
+  reportScore,
 }) {
   return (
     <JSGDHost
       playerName={playerName}
       canvasResizePolicy={canvasResizePolicy}
-      reportScore={score => console.log('score', score)}
+      reportScore={reportScore}
       prefix={prefix}
       playerPowerUp={playerPowerUp}
       NoticeBlock={HeadingMedium}

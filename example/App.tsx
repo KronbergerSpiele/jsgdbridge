@@ -1,6 +1,7 @@
 import { styled, useStyletron } from 'baseui'
 import { AppNavBar, setItemActive, NavItemT } from 'baseui/app-nav-bar'
 import { Card, StyledBody, StyledAction } from 'baseui/card'
+import { Checkbox, LABEL_PLACEMENT } from 'baseui/checkbox'
 import { TriangleUp, TriangleLeft, TriangleRight, Overflow } from 'baseui/icon'
 import { Input } from 'baseui/input'
 import { Slider } from 'baseui/slider'
@@ -8,6 +9,7 @@ import { HeadingMedium } from 'baseui/typography'
 import * as React from 'react'
 
 import { Host } from './Host'
+import { Score } from './Score'
 
 export const App: React.FC = function App() {
   const [css, theme] = useStyletron()
@@ -31,6 +33,25 @@ export const App: React.FC = function App() {
   const [playerName, setPlayerName] = React.useState('Unknown')
   const [rawPowerUp, setPowerUp] = React.useState([1])
   const [playerPowerUp] = rawPowerUp
+
+  const [activeScore, setActiveScore] = React.useState<null | number>(null)
+
+  const [isSharingEnabled, setIsSharingEnabled] = React.useState(false)
+
+  const onReportScore = React.useCallback(
+    (score: number) => {
+      console.log('game reported score', score)
+      console.log({ isSharingEnabled, score })
+
+      isSharingEnabled && setActiveScore(score)
+    },
+    [isSharingEnabled]
+  )
+
+  const handleScoreCompleted = React.useCallback(() => {
+    setActiveScore(null)
+  }, [])
+
   return (
     <React.Fragment>
       <div
@@ -87,6 +108,29 @@ export const App: React.FC = function App() {
               />
             </StyledBody>
           </Card>
+          <Card
+            title='Misc'
+            overrides={{
+              Root: { style: () => ({ flexGrow: 0 }) },
+            }}
+          >
+            <StyledBody>
+              <Checkbox
+                checked={isSharingEnabled}
+                onChange={(e: any) => setIsSharingEnabled(e.target.checked)}
+                labelPlacement={LABEL_PLACEMENT.right}
+              >
+                Enable score sharing
+              </Checkbox>
+              <Checkbox
+                checked={true}
+                onChange={(e: any) => {}}
+                labelPlacement={LABEL_PLACEMENT.right}
+              >
+                Sound
+              </Checkbox>
+            </StyledBody>
+          </Card>
         </Settings>
         <Centered>
           {!activeItem ? (
@@ -98,6 +142,7 @@ export const App: React.FC = function App() {
               canvasResizePolicy={1}
               playerName={playerName}
               playerPowerUp={playerPowerUp}
+              reportScore={onReportScore}
             />
           ) : activeItem.label === 'Bloodfever' ? (
             <Host
@@ -105,6 +150,7 @@ export const App: React.FC = function App() {
               key='bloodfever'
               playerName={playerName}
               playerPowerUp={playerPowerUp}
+              reportScore={onReportScore}
             />
           ) : (
             <Host
@@ -112,11 +158,13 @@ export const App: React.FC = function App() {
               canvasResizePolicy={1}
               playerName={playerName}
               playerPowerUp={playerPowerUp}
+              reportScore={onReportScore}
               key='kg'
             />
           )}
         </Centered>
       </div>
+      <Score score={activeScore} onCompleted={handleScoreCompleted} />
     </React.Fragment>
   )
 }
