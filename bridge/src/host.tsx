@@ -9,7 +9,7 @@ export type JSGDHostProps = {
   prefix: string
   canvasResizePolicy?: 0 | 1 | 2
   reportScore(score: number): void
-  playerPowerup?: number
+  playerPowerUp?: number
   executable?: string
   canvasWidth?: number
   canvasHeight?: number
@@ -26,7 +26,7 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
     canvasResizePolicy = 0,
     reportScore,
     playerName,
-    playerPowerup = 1,
+    playerPowerUp = 1,
     canvasHeight = 320,
     canvasWidth = 480,
   } = props
@@ -61,7 +61,7 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
     window.jsgdhost = {
       playerName,
       reportScore,
-      playerPowerup,
+      playerPowerUp,
     }
 
     const engine = new Engine(GODOT_CONFIG)

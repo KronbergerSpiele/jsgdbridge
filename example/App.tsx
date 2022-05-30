@@ -1,15 +1,16 @@
 import { styled, useStyletron } from 'baseui'
 import { AppNavBar, setItemActive, NavItemT } from 'baseui/app-nav-bar'
-import { TriangleLeft, TriangleRight, Overflow, Upload } from 'baseui/icon'
+import { TriangleUp, TriangleLeft, TriangleRight, Overflow } from 'baseui/icon'
 import { HeadingMedium } from 'baseui/typography'
 import * as React from 'react'
 
 import { Host } from './Host'
 
 export const App: React.FC = function App() {
-  const [css] = useStyletron()
+  const [css, theme] = useStyletron()
   const [activeItem, setActiveItem] = React.useState<NavItemT | null>(null)
   const [mainItems, setMainItems] = React.useState<NavItemT[]>([
+    { icon: TriangleUp, label: 'Localhost' },
     { icon: TriangleLeft, label: 'Kellergewoelbenlauf' },
     { icon: TriangleRight, label: 'Bloodfever' },
   ])
@@ -34,14 +35,10 @@ export const App: React.FC = function App() {
           flexDirection: 'column',
           height: '100vh',
           width: '100vw',
+          backgroundColor: theme.colors.backgroundPrimary,
         })}
       >
-        <div
-          className={css({
-            boxSizing: 'border-box',
-            width: '100%',
-          })}
-        >
+        <Nav>
           <AppNavBar
             title="Johnny's Playground"
             mainItems={mainItems}
@@ -51,10 +48,16 @@ export const App: React.FC = function App() {
             username='Johnny Goslar'
             userImgUrl=''
           />
-        </div>
+        </Nav>
         <Centered>
           {!activeItem ? (
             <HeadingMedium>Select a game!</HeadingMedium>
+          ) : activeItem.label === 'Localhost' ? (
+            <Host
+              prefix='http://localhost:1235'
+              key='localhost'
+              canvasResizePolicy={1}
+            />
           ) : activeItem.label === 'Bloodfever' ? (
             <Host
               prefix='https://kronbergerspiele.github.io/bloodfever/'
@@ -73,14 +76,19 @@ export const App: React.FC = function App() {
   )
 }
 
+const Nav = styled('div', ({ $theme }) => ({
+  borderBottomColor: $theme.colors.backgroundSecondary,
+  borderBottomWidth: '2px',
+  borderBottomStyle: 'solid',
+  boxSizing: 'border-box',
+  width: '100%',
+}))
+
 const Centered = styled('div', ({ $theme }) => ({
   display: 'flex',
   flexGrow: 100,
   justifyContent: 'center',
   alignItems: 'center',
-  borderTopColor: $theme.colors.backgroundSecondary,
-  borderTopWidth: '2px',
-  borderTopStyle: 'solid',
   backgroundColor: $theme.colors.backgroundPrimary,
 }))
 
