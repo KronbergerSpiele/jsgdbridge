@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import useResizeObserver from 'use-resize-observer'
 
 import Engine from './engine'
@@ -13,6 +13,7 @@ export type JSGDHostProps = {
   executable?: string
   canvasWidth?: number
   canvasHeight?: number
+  NoticeBlock?: React.FC<React.PropsWithChildren<{ style?: CSSProperties }>>
 }
 
 export type Godot = any
@@ -29,6 +30,7 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
     playerPowerUp = 1,
     canvasHeight = 320,
     canvasWidth = 480,
+    NoticeBlock,
   } = props
 
   const containerRef = React.useRef<HTMLDivElement>(null)
@@ -72,7 +74,7 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
       engine
         .startGame({
           onProgress(current, total) {
-            setNotice(`loading: ${current}/${total}`)
+            setNotice(`loading: ${current} bytes`)
           },
         })
         .then(() => {
@@ -121,6 +123,30 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
     window.jsgdhost?.onPlayerNameChanged?.(playerName)
   }, [playerName])
 
+  React.useEffect(() => {
+    window.jsgdhost?.onPlayerPowerUpChanged?.(playerPowerUp)
+  }, [playerPowerUp])
+
+  const renderedNotice = notice ? (
+    NoticeBlock ? (
+      <NoticeBlock
+        style={{
+          position: 'absolute',
+        }}
+      >
+        {notice}
+      </NoticeBlock>
+    ) : (
+      <p
+        style={{
+          position: 'absolute',
+        }}
+      >
+        {notice}
+      </p>
+    )
+  ) : null
+
   return (
     <div
       style={{
@@ -133,20 +159,12 @@ export const JSGDHost: React.FC<JSGDHostProps> = React.memo(function JSGDHost(
       }}
       ref={containerRef}
     >
-      {notice ? (
-        <p
-          style={{
-            position: 'absolute',
-          }}
-        >
-          {notice}
-        </p>
-      ) : null}
+      {renderedNotice}
       <canvas
         id='canvas'
         height={isRescaling ? containerHeight : canvasHeight}
         width={isRescaling ? containerWidth : canvasWidth}
-        style={{ position: 'absolute' }}
+        style={{ position: 'absolute', outline: 'none' }}
       >
         HTML5 canvas appears to be unsupported in the current browser. Please
         try updating or use a different browser.

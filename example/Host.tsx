@@ -1,3 +1,4 @@
+import { HeadingMedium } from 'baseui/typography'
 import * as React from 'react'
 
 import JSGDHost from '../bridge'
@@ -22,6 +23,7 @@ export const Host: React.FC<HostProps> = function Host({
       reportScore={score => console.log('score', score)}
       prefix={prefix}
       playerPowerUp={playerPowerUp}
+      NoticeBlock={HeadingMedium}
     />
   )
 }

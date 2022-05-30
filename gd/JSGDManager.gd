@@ -22,7 +22,7 @@ func _ready():
       info(playerName)
       info(playerPowerUp)
       host.onPlayerNameChanged = _onPlayerNameChanged_ref
-      host.onPowerUpChanged = _onPowerUpChanged_ref
+      host.onPlayerPowerUpChanged = _onPowerUpChanged_ref
       
 func reportScore(score):
   info('sending score to client:')
@@ -37,8 +37,9 @@ func onPlayerNameChanged(newName):
   playerName = newName
   emit_signal("playerNameChanged", newName)
   
-var _onPowerUpChanged_ref = JavaScript.create_callback(self, "_onPowerUpChanged_ref")
+var _onPowerUpChanged_ref = JavaScript.create_callback(self, "onPowerUpChanged")
 func onPowerUpChanged(newPowerUp):
+  print('new power up', newPowerUp)
   if newPowerUp is Array:
     newPowerUp = newPowerUp[0]
   playerPowerUp = newPowerUp

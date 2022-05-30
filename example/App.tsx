@@ -31,7 +31,6 @@ export const App: React.FC = function App() {
   const [playerName, setPlayerName] = React.useState('Unknown')
   const [rawPowerUp, setPowerUp] = React.useState([1])
   const [playerPowerUp] = rawPowerUp
-
   return (
     <React.Fragment>
       <div
@@ -58,7 +57,7 @@ export const App: React.FC = function App() {
           <Card
             title='Name'
             overrides={{
-              Root: { style: ({ $theme }) => ({ flexGrow: 0 }) },
+              Root: { style: () => ({ flexGrow: 0 }) },
             }}
           >
             <StyledBody>
@@ -71,19 +70,20 @@ export const App: React.FC = function App() {
             </StyledBody>
           </Card>
           <Card
-            title='Power Up'
+            title='Speed'
             overrides={{
-              Root: { style: ({ $theme }) => ({ flexGrow: 1 }) },
+              Root: { style: () => ({ flexGrow: 1 }) },
             }}
           >
             <StyledBody>
               <Slider
                 value={rawPowerUp}
                 min={0}
-                max={5}
+                max={3}
                 step={0.1}
                 onChange={({ value }) => value && setPowerUp(value)}
                 onFinalChange={({ value }) => console.log(value)}
+                persistentThumb
               />
             </StyledBody>
           </Card>
