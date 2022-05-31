@@ -1,0 +1,46 @@
+@startuml
+skinparam backgroundcolor transparent
+skinparam defaultFontColor white
+skinparam ArrowColor white
+skinparam ComponentBackgroundColor grey
+skinparam NodeBackgroundColor grey
+skinparam CloudBorderColor white
+skinparam ActorBorderColor white
+
+component "Your Website" as Website
+
+component UI
+
+component JSGDHost
+
+cloud "Some Other Host" {
+  component "Exported Game" as Game {
+     node "game.js"
+     node "game.pck"
+     node "game.wasm"
+    
+  }
+}
+
+actor User
+
+component "WebGL Context" as WebGL
+component Engine
+
+
+User -> Website : visits
+Website -> UI : renders
+Website -> JSGDHost : renders
+
+JSGDHost -> Game : fetches
+JSGDHost -> Engine : instantiates
+
+Engine -d-> WebGL : renders into
+
+UI <-> JSGDHost : callbacks
+
+JSGDHost -> WebGL : creates
+
+User -> WebGL : interacts
+
+@enduml

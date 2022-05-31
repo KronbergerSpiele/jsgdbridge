@@ -41,8 +41,6 @@ export const App: React.FC = function App() {
   const onReportScore = React.useCallback(
     (score: number) => {
       console.log('game reported score', score)
-      console.log({ isSharingEnabled, score })
-
       isSharingEnabled && setActiveScore(score)
     },
     [isSharingEnabled]
@@ -139,7 +137,7 @@ export const App: React.FC = function App() {
             <Host
               prefix='http://localhost:1235'
               key='localhost'
-              canvasResizePolicy={1}
+              canvasResizePolicy={0}
               playerName={playerName}
               playerPowerUp={playerPowerUp}
               reportScore={onReportScore}

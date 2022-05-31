@@ -1,0 +1,78 @@
+@startuml
+skinparam backgroundcolor transparent
+skinparam defaultFontColor white
+skinparam ArrowColor white
+skinparam ComponentBackgroundColor grey
+skinparam NodeBackgroundColor grey
+skinparam CloudBorderColor white
+skinparam ActorBorderColor white
+skinparam ClassBackgroundColor darkgrey
+skinparam NoteBackgroundColor darkgrey
+
+component Website {
+
+class UI {
+}
+
+class JSGDHost {
+  onReportScore(score: number)
+  playerName: string
+  playerPowerUp: number
+}
+
+UI -> JSGDHost : createElement
+
+}
+
+
+component Window {
+
+ interface Bridge {
+   initialPlayerName: string
+   initialPlayerPowerUp: string
+
+   onReportScore(score: number)
+   
+   onPlayerNameChanged(name: string)
+   onPlayerPowerUpChanged(value: number)
+ }
+}
+
+
+note "Instantiated per Host instance" as N1
+N1 .. Bridge
+
+component Game {
+
+class JSGDClient {
+  playerName: string
+  playerPowerUp: number
+
+
+  signal playerNameChanged(name: string)
+  signal playerPowerUpChanged(value: number)
+
+  reportScore(score: number): void
+}
+
+class GameComponent {
+}
+
+GameComponent -u- JSGDClient::playerPowerUpChanged : listens to signal
+
+}
+
+
+JSGDHost::playerName -r- Bridge::initialPlayerName : sets
+JSGDHost::playerPowerUp -r- Bridge::initialPlayerPowerUp : sets
+JSGDHost::onReportScore -r- Bridge::onReportScore : sets
+
+JSGDHost::playerName -r- Bridge::onPlayerNameChanged : calls on change
+JSGDHost::playerPowerUp -r- Bridge::onPlayerPowerUpChanged : calls on change
+
+JSGDClient::playerNameChanged -l- Bridge::onPlayerNameChanged : sets
+JSGDClient::playerPowerUpChanged -l- Bridge::onPlayerPowerUpChanged : sets
+
+
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+skinparam backgroundcolor transparent
+skinparam defaultFontColor white
+skinparam ArrowColor white
+skinparam ComponentBackgroundColor grey
+skinparam NodeBackgroundColor grey
+skinparam CloudBorderColor white
+skinparam ActorBorderColor white
+
+
+cloud "Github" {
+component "Game Repo" as GameRepo
+component "Game Page" as GamePage
+
+component "Web Repo" as WebRepo
+component "Web Page" as WebPage
+
+component "ks-godot-ci" as ci {
+component "docker image" as docker
+component "workflows"
+}
+
+GameRepo -u-> workflows : calls
+workflows -u-> GamePage : publish to
+WebRepo .u.> WebPage : publish to
+WebPage .u.> GamePage : later fetch
+
+workflows -l-> docker : use
+
+}
+
+component "Godot Project" as Godot
+
+component "Embedding Website" as Website
+
+Godot -u-> GameRepo : pushes to
+Website -u-> WebRepo : pushes to
+
+actor Developer
+Developer -u-> Godot : works on
+Developer -u-> Website : works on
+
+
+@enduml
